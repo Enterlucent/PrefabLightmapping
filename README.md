@@ -1,18 +1,72 @@
-# PrefabLightmapping
-Script for saving lightmapping data to prefabs. Used through the Assets tab in Unity. Place your prefabs in the scene with this script at the root. Set up your lighting and in the editor go to Assets->Bake Prefab Lightmaps. After the bake is processed you can now spawn your prefabs in different scenes and they will use the lightmapping from the original scene. 
+# Prefab Lighting Tool
 
-Remember that if you are not instantiating your prefabs at runtime you should remove the static flag from the GameObjects, otherwise static batching will mess with uvs and the lightmap won't work properly.
+Utility for saving multiple, distinct, light mapping information for individual prefabs for instantiation within alternate scenes.
 
-If you find problems when building make sure to check your graphics settings under Project Settings, as shader stripping might be the cause of the issue. Try playing with the option "Lightmap Modes" and setting it to Custom if it's not working.
+For an in-depth overview please see the [documentation](./docs/USAGE.md) otherwise the [Quick Start](#quick-start "Quick Start") guide should get provide the essentials for the tool's use.
 
-![Graphics Settings](https://user-images.githubusercontent.com/13970424/60190570-7dd05680-97f8-11e9-991f-f54b816a577f.png)
+The current version requires Unity 2021.3+.
 
-*There is also an issue with Probuilder Objects so make sure to bake those meshes down so you don't use Probuilder objects in the prefabs.
+## Getting Started
+* [Quick Start](#quick-start "Quick Start") - Brief introduction to the package
+* [Support Questions](#how-to-open-a-support-question "Support Questions") - Check to see if any one else has had the same question.
+* [Bug Report](#how-to-submit-a-bug-report "Support Questions") - Check to see if any one else has had the same problem.
+* [Feature Requests](#how-to-open-a-feature-request "Support Questions") - Check to see if any one else has had the same idea.
 
-Original idea came from Joachim_Ante in the Unity forums
 
-Feel free to use this project in all commercial and personal projects ;)
+## Quick Start
 
-# Runtime Light Probes
+### Prefab Lightmap Tool
 
-I added a new script that can be used to use lightprobes with your lightmapped prefabs. It needs a special setup though. You need to create a uniform lightprobe group in the scene you are going to instantiate prefabs at, and then do an "empty" bake in that scene. Then this script (LightProbeRuntime.cs) will be in that scene where you instantiate prefabs, and it will wait a frame to calculate the light volume contribution from the lights in the scene (so for this to work properly you need to have those lights be a part of the prefabs rooms/assets you bake, so this script finds the lights and adds their "would be" contribution to the probes). You can easily tweak this to call it at will if you prefer to recalculate probes at different times.
+Place your prefabs in the scene with the PrefabLightmap component at their root. Set up your lighting in the editor and use the tool's interface (Window->Rendering->Lighting->Prefab Lightmap Tool) to bake your scene. After the bake is complete you can now spawn your prefabs in different scenes and they will use the light-mapping from the original scene.
+
+*Remember that if you are not instantiating your prefabs at runtime you should remove the static flag from the GameObjects, otherwise static batching will mess with uvs and the lightmap won't work properly.*
+
+### Runtime Light Probes
+
+Preexisting light probes will be updated in real time based on the lighting data found in the scene.
+
+Attach the LightProbeRuntime component to a GameObject within the target scene where prefabs will be instantiated.  In that same scene create (a) uniform light probe group(s) and bake that scene so that light probes are stored in the scene's lighting data.  At runtime the script will wait one frame and then start calculating the light volume contributions from the lights in the scene to be added to those previously stored light probes.  Best practice is to include the lights with the prefabs that you previously baked for.
+
+## How to Open a Support Question
+1. Determine if your question has already been [asked by others](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Aquestion+is%3Aall)
+    * If you find the question then there's no need to open another ticket.
+    * If you do not feel the question has been thoroughly answered, then comment on it and ask for more clarification
+2. Create a [Question Issue](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Custom.md)
+    * Add [?] to the title of your Issue _(ie [?] How Do I Install This Game?)_
+    * Try to be as detailed as possible
+    * Try to use clear and direct language as much as possible
+3. Check back, or enable the notification options, to see the answer to your question
+    * Keep in mind that everyone is here in their free time and there may be gaps when responses are slow.    Feel free to set the notification settings for the question so you'll know immediately when its answered.
+
+## How to Open a Bug Report<a id="how-to-submit-a-bug-report"></a>
+1. Determine if the bug has already been [reported](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Abug+is%3Aopen)
+    * If you find that the Issue has already been opened then a new Issue is not needed.
+    * Feel free to add your experiences to bug reports and to reopen bug Issues if it crops up again.
+2. Create a "Bug Report" on the [Issues page](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Bug_report.md).
+    * Add [BUG] to the title of your issue _(ie [BUG] Cats Get Too Many Cheeseburgers)_
+    * Make sure that you are very detailed with what you are experiencing
+3. Check back often, or enable the notification options, in case others have questions or need further clarification
+
+## How to Open a Feature Request<a id="how-to-open-a-feature-request"></a>
+1. Determine if the same or similar [Feature Requests](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Aenhancement+is%3Aopen+-label%3Adocumentation) already exists.
+    * If one does exist, feel free to expand upon it by commenting on the Issue but **do not open a new one**.
+2. Create a [Feature Request](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Feature_request.md) on the Issues page.
+    * If your Feature Request requires additional/changed documentation then a [Documentation Request](CONTRIBUTING.md#how-to-open-a-documentation-request) is also required
+        * You must provide a reference to the Documentation Request in the Feature Request Issue
+    * Make sure that you are very detailed with what you think the feature should accomplish, how it should be implemented and it's predicted effect on other features.
+3. Check back often, or enable the notification options, in the event others have questions about your proposal
+4. You will know when the feature is accepted when the "approved" label is assigned to it
+    * If there are multiple requests as a part of the feature, the feature will not be moved to the master branch until all dependent parts have been completed.
+    * It is important to keep in mind that all new features, even simple changes, often have wide ranging effect which need to be fully explored.
+    * Also remember that not all features can be added into the game (but I'm sure we'll try!) and features need to be released in an orderly way so even if the feature is accepted it may not go in immediately.
+
+## Contributing
+Please read [CONTRIBUTING](CONTRIBUTING.md) for details on submitting work to the project and our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+
+## Authors
+* **Joachim_Ante** - *Programming* - [Joachim_Ante](https://blog.unity.com/author/cap-joe)
+
+See also the list of [contributors](https://github.com/Enterlucent/PrefabLightmapping/graphs/contributors) who participated in this project.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
