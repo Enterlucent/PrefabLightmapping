@@ -5,10 +5,10 @@
 * [How to Submit Code](#how-to-submit-code)
 
 ## How to Open a Bug Report<a id="how-to-submit-a-bug-report"></a>
-1. Determine if the bug has already been [reported](https://github.com/mdwigley/PrefabLightmapping/issues?q=label%3Abug+is%3Aopen+is%3Aall)
+1. Determine if the bug has already been [reported](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Abug+is%3Aopen+is%3Aall)
     * If you find that the Issue has already been opened then a new Issue is not needed.
     * Feel free to add your experiences to bug reports and to reopen bug Issues if it crops up again.
-2. Create a "Bug Report" on the [Issues page](https://github.com/mdwigley/PrefabLightmapping/issues/new?template=Bug_report.md).
+2. Create a "Bug Report" on the [Issues page](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Bug_report.md).
     * Add [BUG] to the title of your issue _(ie [BUG] Cats Get Too Many Cheeseburgers)_
     * Make sure that you are very detailed with what you are experiencing
 3. Check back often, or enable the notification options, in case others have questions or need further clarification
@@ -22,9 +22,9 @@ It might be a little nuanced the difference between a bug vs a change in the exp
 When you have the next best feature for the PrefabLightmapping project you will first need to let us know about it!
 
 ## How to Open a Feature Request<a id="how-to-open-a-feature-request"></a>
-1. Determine if the same or similar [Feature Requests](https://github.com/mdwigley/PrefabLightmapping/issues?q=label%3Aenhancement+is%3Aopen+-label%3Adocumentation) already exists.
+1. Determine if the same or similar [Feature Requests](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Aenhancement+is%3Aopen+-label%3Adocumentation) already exists.
     * If one does exist, feel free to expand upon it by commenting on the Issue but **do not open a new one**.
-2. Create a [Feature Request](https://github.com/mdwigley/PrefabLightmapping/issues/new?template=Feature_request.md) on the Issues page.
+2. Create a [Feature Request](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Feature_request.md) on the Issues page.
     * If your Feature Request requires additional/changed documentation then a [Documentation Request](#how-to-open-a-documentation-request) is also required
         * You must provide a reference to the Documentation Request in the Feature Request Issue
     * Make sure that you are very detailed with what you think the feature should accomplish, how it should be implemented and it's predicted effect on other features.
@@ -35,10 +35,10 @@ When you have the next best feature for the PrefabLightmapping project you will 
     * Also remember that not all features can be added into the game (but I'm sure we'll try!) and features need to be released in an orderly way so even if the feature is accepted it may not go in immediately.
 
 ## How to Open a Documentation Request<a id="how-to-open-a-documentation-request"></a>
-1. Determine if the [Documentation Request](https://github.com/mdwigley/PrefabLightmapping/issues?q=label%3Aenhancement,documentation+is%3Aopen) you want to create already exists.
+1. Determine if the [Documentation Request](https://github.com/Enterlucent/PrefabLightmapping/issues?q=label%3Aenhancement,documentation+is%3Aopen) you want to create already exists.
     * Ask questions about implementation on the Issue thread and/or join the [Discord](https://discord.com/invite/mWDHDqkzeR) server to talk with people in real time.
     * If you find an Issue that is very close to what you'd like to do but missing some critical element, comment on that Issue so the change can be discussed.
-2. Open an [Issue](https://github.com/mdwigley/PrefabLightmapping/issues/new?template=Feature_request.md) explaining your proposed documentation changes/additions
+2. Open an [Issue](https://github.com/Enterlucent/PrefabLightmapping/issues/new?template=Feature_request.md) explaining your proposed documentation changes/additions
     * Add [DOC] the title of your issue _(ie. [DOC] How to Install PrefabLightmapping)_
 3. Others may ask questions or request changes to your proposal so make sure to check back, or enable the notification options!
 4. You will know if the Issue is accepted when it's given the "approved" label
@@ -46,8 +46,8 @@ When you have the next best feature for the PrefabLightmapping project you will 
 
 ## How to Submit Documentation<a id="how-to-submit-documentation"></a>
 1. [Find an Issue](#how-to-find-documentation-tasks) to resolve
-2. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/mdwigley/PrefabLightmapping/)
-3. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}-{your-github-user}' _(ie issue#224-mdwigley)_
+2. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/Enterlucent/PrefabLightmapping/)
+3. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}-{your-github-user}' _(ie issue#224-Enterlucent)_
 4. Make any changes or additions to your new branch
     * Make sure to [keep your forks in sync](https://help.github.com/articles/syncing-a-fork/) with the original repository
     * If you find that you need help with implementation, ask to have the "Help Wanted" label added to the issue as well as seeking others on the [Discord](https://discord.com/invite/mWDHDqkzeR) server
@@ -60,17 +60,16 @@ When you have the next best feature for the PrefabLightmapping project you will 
 ## How to Submit Code<a id="how-to-submit-code"></a>
 1. Setup your [Development Environment](/docs//Dev.Env.Win10.md)
 2. [Find an issue](#how-to-find-programing-tasks) to resolve
-3. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/mdwigley/PrefabLightmapping/)
+3. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/Enterlucent/PrefabLightmapping/)
 4. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}-{your-github-user}' _(ie issue#224-mdwigley)_
 5. [Update](https://gist.github.com/gitaarik/8735255#keeping-your-submodules-up-to-date) sub-modules
-6. Make any changes or additions to your new branch (**do not** modify "./Assets/Internal")
+6. Make any changes or additions to your new branch
     * Make sure to [keep your forks in sync](https://help.github.com/articles/syncing-a-fork/) with the original repository
     * If you find that you need help with implementation, ask to have the "Help Wanted" label added to the issue as well as seeking others on the [Discord](https://discord.com/invite/mWDHDqkzeR) server
     * Ensure all files have been white-space formatted
         * Often the default formatting for Visual Studio or MonoDevelop will do
         * If you use Visual Studio you can use the [official format settings](/docs/assets/files/CONTRIBUTING/.editorconfig)
     * Comment your code with both code level and construct definitions
-        * We use Doxygen for code level documentation
 7. When finished, submit a [Pull Request](https://help.github.com/articles/about-pull-requests/) that includes just the changes in the Issue.
     * Others may ask questions or request changes so make sure to check back, or enable the notification options!
 8. The [Pull Request](https://help.github.com/articles/about-pull-requests/) will be reviewed and, if approved, will be merged.
