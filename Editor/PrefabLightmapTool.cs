@@ -310,9 +310,7 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdateListView()
     {
-        List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();
-
-        this.ToggleAll.value = false;
+        List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();        
 
         if (items.Count > 0)
             this.ToggleAll.SetEnabled(true);
@@ -463,7 +461,7 @@ public class PrefabLightmapTool : EditorWindow
     /// <returns>All currently enabled <see cref="PrefabLightmapData"/> components in the scene</returns>
     protected List<PrefabLightmapDataItem> FindPrefabLightmapItems()
     {
-        List<PrefabLightmapDataItem> items = (List<PrefabLightmapDataItem>)this.ListViewBehaviours.itemsSource;
+        List<PrefabLightmapDataItem> items = this.ListViewBehaviours.itemsSource as List<PrefabLightmapDataItem>;
 
         PrefabLightmapData[] prefabLightmaps = GameObject.FindObjectsOfType<PrefabLightmapData>();
 
