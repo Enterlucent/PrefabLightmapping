@@ -1,6 +1,6 @@
-# Prefab Lightmap Tool
+# Prefab Lighting Tool
 
-The prefab lightmap tool is an addition to the Unity editor that will allow a developer to create multiple baked lighting environments for individual prefabs that can then later be instantiated in different scenes but retain their lighting information.
+The prefab lighting tool is an addition to the Unity editor that will allow a developer to create multiple baked lighting environments for individual prefabs that can then later be instantiated in different scenes but retain their lighting information.
 
 This tool has been designed to be as easy to use and intuitive as possible while also providing many powerful features needed to create production games.  The interface can be accessed within the Window pull down (Window->Rendering->Lighting->Prefab Lightmap Tool).
 
@@ -50,7 +50,7 @@ This section will provide an example workflow that uses the Prefab Lightmap Tool
 
 ## Details
 
-Here we will provide some details on how the tool preforms it's work.
+Here we will provide some details on how the tool performs its work.
 
 ### Export Path
 
