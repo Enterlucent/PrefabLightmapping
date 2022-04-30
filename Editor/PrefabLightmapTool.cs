@@ -409,7 +409,7 @@ public class PrefabLightmapTool : EditorWindow
 
                 if (index < 0)
                 {
-                    index = prefabLightmap.PrefabLightmapInfoSlots.Length;
+                    index = prefabLightmap.PrefabLightmapInfoSlots == null ? 0 : prefabLightmap.PrefabLightmapInfoSlots.Length;
 
                     Array.Resize(ref prefabLightmap.PrefabLightmapInfoSlots, index + 1);
                 }
@@ -474,7 +474,7 @@ public class PrefabLightmapTool : EditorWindow
                 bool found = false;
 
                 for (int j = 0; j < prefabLightmaps.Length; j++)
-                    if (items[i].Id == prefabLightmaps[j].GetInstanceID())
+                    if (items[i].Id == prefabLightmaps[j].GetInstanceID() && items[i].PrefabLightmap != null)
                     {
                         found = true;
                         break;
