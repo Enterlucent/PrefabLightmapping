@@ -596,26 +596,9 @@ public class PrefabLightmapTool : EditorWindow
 
                     renderData.LightmapOffsetScale = renderer.lightmapScaleOffset;
 
-                    Texture2D lightmap = PrefabLightmapTool.CopyLightmap(
-                        LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapColor,
-                        exportRoot,
-                        objectName,
-                        lightmapName,
-                        TextureImporterType.Lightmap);
-
-                    Texture2D lightmapDir = PrefabLightmapTool.CopyLightmap(
-                        LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapDir,
-                        exportRoot,
-                        objectName,
-                        lightmapName,
-                        TextureImporterType.DirectionalLightmap);
-
-                    Texture2D shadowMask = PrefabLightmapTool.CopyLightmap(
-                        LightmapSettings.lightmaps[renderer.lightmapIndex].shadowMask,
-                        exportRoot,
-                        objectName,
-                        lightmapName,
-                        TextureImporterType.Shadowmask);
+                    Texture2D lightmap = LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapColor;
+                    Texture2D lightmapDir = LightmapSettings.lightmaps[renderer.lightmapIndex].lightmapDir;
+                    Texture2D shadowMask = LightmapSettings.lightmaps[renderer.lightmapIndex].shadowMask;
 
                     renderData.LightmapIndex = lightmapList.IndexOf(lightmap);
 
@@ -650,6 +633,42 @@ public class PrefabLightmapTool : EditorWindow
         data.ShadowMasks = shadowMaskList.ToArray();
         data.LightData = lightsDataList.ToArray();
         data.RendererData = renderDataList.ToArray();
+
+        for (int i = 0; i < data.Lightmaps.Length; i++)        
+        {
+            Texture2D copied = PrefabLightmapTool.CopyLightmap(
+                data.Lightmaps[i],
+                exportRoot,
+                objectName,
+                lightmapName,
+                TextureImporterType.Lightmap);
+
+            data.Lightmaps[i] = copied;
+        }
+
+        for (int i = 0; i < data.DirectionalLightmaps.Length; i++)
+        {
+            Texture2D copied = PrefabLightmapTool.CopyLightmap(
+                data.DirectionalLightmaps[i],
+                exportRoot,
+                objectName,
+                lightmapName,
+                TextureImporterType.DirectionalLightmap);
+
+            data.DirectionalLightmaps[i] = copied;
+        }
+
+        for (int i = 0; i < data.ShadowMasks.Length; i++)
+        {
+            Texture2D copied = PrefabLightmapTool.CopyLightmap(
+                data.ShadowMasks[i],
+                exportRoot,
+                objectName,
+                lightmapName,
+                TextureImporterType.Shadowmask);
+
+            data.ShadowMasks[i] = copied;
+        }
 
         return data;
     }
