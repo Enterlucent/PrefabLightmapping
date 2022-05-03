@@ -467,7 +467,10 @@ public class PrefabLightmapTool : EditorWindow
     /// <returns>All currently enabled <see cref="PrefabLightmapData"/> components in the scene</returns>
     protected List<PrefabLightmapDataItem> FindPrefabLightmapItems()
     {
-        List<PrefabLightmapDataItem> items = this.ListViewBehaviours.itemsSource as List<PrefabLightmapDataItem>;
+        List<PrefabLightmapDataItem> items = null;
+
+        if (this.ListViewBehaviours != null && this.ListViewBehaviours.itemsSource != null)
+            items = this.ListViewBehaviours.itemsSource as List<PrefabLightmapDataItem>;
 
         PrefabLightmapData[] prefabLightmaps = GameObject.FindObjectsOfType<PrefabLightmapData>();
 
