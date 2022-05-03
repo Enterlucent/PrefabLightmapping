@@ -44,7 +44,11 @@ public class PrefabLightmapTool : EditorWindow
     /// <summary>
     /// Internal value for determining if the bake was started as a result of this tool
     /// </summary>
-    protected bool startedBaking;
+    protected bool StartedBaking;
+    /// <summary>
+    /// If the GUI has been loaded by CreateGUI
+    /// </summary>
+    protected bool UILoaded;
 
     /// <summary>
     /// Export path text field
@@ -156,10 +160,12 @@ public class PrefabLightmapTool : EditorWindow
         this.ButtonBake.clicked += this.ButtonBakeClicked;
 
         this.UpdateListView();
+
+        this.UILoaded = true;
     }
     public void OnFocus()
     {
-        this.UpdateListView();
+        if (this.UILoaded) this.UpdateListView();
     }
 
     /// <summary>
@@ -223,7 +229,7 @@ public class PrefabLightmapTool : EditorWindow
             return;
         }
 
-        this.startedBaking = true;
+        this.StartedBaking = true;
 
         Lightmapping.bakeCompleted += this.UpdatePrefabs;
         Lightmapping.BakeAsync();
@@ -310,7 +316,7 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdateListView()
     {
-        List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();        
+        List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();
 
         if (items.Count > 0)
             this.ToggleAll.SetEnabled(true);
@@ -373,7 +379,7 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdatePrefabs()
     {
-        if (this.startedBaking == false)
+        if (this.StartedBaking == false)
             return;
 
         int counter = 0;
@@ -452,7 +458,7 @@ public class PrefabLightmapTool : EditorWindow
             }
         }
 
-        this.startedBaking = false;
+        this.StartedBaking = false;
     }
 
     /// <summary>
@@ -632,7 +638,7 @@ public class PrefabLightmapTool : EditorWindow
         data.LightData = lightsDataList.ToArray();
         data.RendererData = renderDataList.ToArray();
 
-        for (int i = 0; i < data.Lightmaps.Length; i++)        
+        for (int i = 0; i < data.Lightmaps.Length; i++)
         {
             Texture2D copied = PrefabLightmapTool.CopyLightmap(
                 data.Lightmaps[i],
