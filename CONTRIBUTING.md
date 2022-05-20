@@ -1,4 +1,4 @@
-# Quick Start<a id="quick-start"></a>
+# Contributing
 * [How to Open a Bug Report](#how-to-open-a-bug-report)
 * [When is it a Feature Request](#When-is-it-a-feature-request)
 * [How to Open a Feature Request](#how-to-open-a-feature-request)
@@ -50,7 +50,7 @@ When you have the next best feature for the PrefabLightmapping project you will 
 ## How to Submit Documentation
 1. [Find an Issue](#how-to-find-documentation-tasks) to resolve
 2. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/Enterlucent/PrefabLightmapping/)
-3. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}-{your-github-user}' _(ie issue#224-mdwigley)_
+3. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}' _(ie issue#224)_
 4. Make any changes or additions to your new branch
     * Make sure to [keep your forks in sync](https://help.github.com/articles/syncing-a-fork/) with the original repository
     * If you find that you need help with implementation, ask to have the "Help Wanted" label added to the issue as well as seeking others on the [Discord](https://discord.com/invite/mWDHDqkzeR) server
@@ -64,7 +64,7 @@ When you have the next best feature for the PrefabLightmapping project you will 
 1. Setup your [Development Environment](/docs//Dev.Env.Win10.md)
 2. [Find an issue](#how-to-find-programing-tasks) to resolve
 3. [Fork](https://help.github.com/articles/fork-a-repo/) the [repository](https://github.com/Enterlucent/PrefabLightmapping/)
-4. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}-{your-github-user}' _(ie issue#224-mdwigley)_
+4. [Create a new branch](https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/) with the format 'issue#{issue-id}' _(ie issue#224)_
 5. [Update](https://gist.github.com/gitaarik/8735255#keeping-your-submodules-up-to-date) sub-modules
 6. Make any changes or additions to your new branch
     * Make sure to [keep your forks in sync](https://help.github.com/articles/syncing-a-fork/) with the original repository

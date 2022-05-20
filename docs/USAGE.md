@@ -23,10 +23,10 @@ The user interface is broken down into 4 distinct sections:
 2. Lightmap Bake Slot - Slots are named containers for storing different environmental bakes
 	- The name of the slot to bake for. *By default the "Default" slot is used*
 	- The check box disables the default slot name and allows the user to input a custom name for the slot to bake to.
-	- The button allows for manual "PrefabLightmap ListView" refreshing, however, *the "PrefabLightmap ListView" is also updated when the tool gains focus*
-3. PrefabLightmap ListView - Used to select which objects to bake for that have the PrefabLightmap component added to them
+	- The button allows for manual "PrefabLightmapData ListView" refreshing, however, *the "PrefabLightmapData ListView" is also updated when the tool gains focus*
+3. PrefabLightmapData ListView - Used to select which objects to bake for that have the PrefabLightmapData component added to them
 4. Misc Functions
-	- The initial check box will allow the user to quickly check or uncheck all items in the "PrefabLightmap ListView"
+	- The initial check box will allow the user to quickly check or uncheck all items in the "PrefabLightmapData ListView"
 	- The clear button will remove the lightmap slot information and stored data for the selected objects and the value of the "Lightmap Bake Slot"
 	- Bake a new lightmap environment and add it to the "Lightmap Bake Slot" and export the files to the "Export Location"
 
@@ -39,11 +39,11 @@ This section will provide an example workflow that uses the Prefab Lightmap Tool
 	- Ensure that lightmap UVs are setup, not overlapping and have good coverage
 	- Adjust Render component's lighting options to suit the needs of environment
 	- Add lights that are set to either "Bake" or "Mixed" mode
-2. Add the PrefabLightmap component
+2. Add the PrefabLightmapData component
 3. Open the Prefab Lightmap Tool (Rendering->Lighting->Prefab Lightmap Tool)
 	- [Optional] Set the export location
 	- [Optional] Change the slot name
-4. Select all the objects in the "PrefabLightmap ListView" to bake for
+4. Select all the objects in the "PrefabLightmapData ListView" to bake for
 5. Press the "Bake" button and wait for the bake to complete
 6. If alternate baking is needed, restart the process but give the slot a new name
 
@@ -56,7 +56,7 @@ Here we will provide some details on how the tool performs its work.
 
 * The export path must be relative to the projects asset folder so that the AssetDatabase functions can perform their work.  *The tool will **attempt** to keep you from using a folder outside the project's asset folder, however, this is not foolproof.*
 
-### PrefabLightmap ListView
+### PrefabLightmapData ListView
 
 * Uses the GameObject instance id for session object identification.   Should be able to retain selections after hierarchy modification but will not retain the selection values on scene change or on editor restart.
 

@@ -9,15 +9,15 @@ The current version requires Unity 2021.3+.
 ## Getting Started
 * [Quick Start](#quick-start "Quick Start") - Brief introduction to the package
 * [Support Questions](#how-to-open-a-support-question "Support Questions") - Check to see if any one else has had the same question.
-* [Bug Report](#how-to-submit-a-bug-report "Support Questions") - Check to see if any one else has had the same problem.
-* [Feature Requests](#how-to-open-a-feature-request "Support Questions") - Check to see if any one else has had the same idea.
+* [Bug Report](#how-to-open-a-bug-report "Bug Report") - Check to see if any one else has had the same problem.
+* [Feature Requests](#how-to-open-a-feature-request "Feature Requests") - Check to see if any one else has had the same idea.
 
 
 ## Quick Start
 
 ### Prefab Lightmap Tool
 
-Place your prefabs in the scene with the PrefabLightmap component at their root. Set up your lighting in the editor and use the tool's interface (Window->Rendering->Lighting->Prefab Lightmap Tool) to bake your scene. After the bake is complete you can now spawn your prefabs in different scenes and they will use the light-mapping from the original scene.
+Place your prefabs in the scene with the PrefabLightmapData component at their root. Set up your lighting in the editor and use the tool's interface (Window->Rendering->Lighting->Prefab Lightmap Tool) to bake your scene. After the bake is complete you can now spawn your prefabs in different scenes and they will use the light-mapping from the original scene.
 
 *Remember that if you are not instantiating your prefabs at runtime you should remove the static flag from the GameObjects, otherwise static batching will mess with uvs and the lightmap won't work properly.*
 
