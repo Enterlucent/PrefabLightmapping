@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 /// <summary>
 /// Custom Editor Inspector for mainpulation the PrefabLightmapData component
 /// </summary>
-[CustomEditor(typeof(PrefabLightmapData))]
+[CustomEditor(typeof(PrefabLightmapData)), CanEditMultipleObjects]
 public class PrefabLightmapDataEditor : Editor
 {
     /// <summary>
@@ -24,31 +25,67 @@ public class PrefabLightmapDataEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        PrefabLightmapData prefabLightmap = (PrefabLightmapData)this.target;
+        if (this.targets.Length == 1)
+            EditorGUILayout.PropertyField(this.serializedPrefabLightmapInfoSlots, new GUIContent("Stored Lightmaps"));
 
-        EditorGUILayout.PropertyField(this.serializedPrefabLightmapInfoSlots, new GUIContent("Stored Lightmaps"));
+        List<string> lightmapSlotNames = null;
 
-        if (prefabLightmap.PrefabLightmapInfoSlots != null && prefabLightmap.PrefabLightmapInfoSlots.Length > 0)
+        foreach (PrefabLightmapData prefabLightmapData in this.targets)
+            lightmapSlotNames = this.GetSlotNameIntersection(prefabLightmapData, lightmapSlotNames);
+
+        int currentLoadedLightmapName = 0;
+
+        if (this.serializedLoadedLightmapName.hasMultipleDifferentValues || lightmapSlotNames.Count < 1)
         {
-            string[] loadedLIghtmapNameChoices = new string[prefabLightmap.PrefabLightmapInfoSlots.Length];
-            int currentSelection = 0;
+            currentLoadedLightmapName = lightmapSlotNames.Count;
 
-            for (int i = 0; i < prefabLightmap.PrefabLightmapInfoSlots.Length; i++)
-            {
-                loadedLIghtmapNameChoices[i] = prefabLightmap.PrefabLightmapInfoSlots[i].Name;
+            lightmapSlotNames.Add("—");
+        }
+        else
+        {
+            currentLoadedLightmapName = lightmapSlotNames.FindIndex(s => s == this.serializedLoadedLightmapName.stringValue);
+        }
 
-                if (prefabLightmap.PrefabLightmapInfoSlots[i].Name == this.serializedLoadedLightmapName.stringValue)
-                    currentSelection = i;
-            }
+        currentLoadedLightmapName = EditorGUILayout.Popup("Default Lightmap", currentLoadedLightmapName, lightmapSlotNames.ToArray());
 
-            this.serializedLoadedLightmapName.stringValue = prefabLightmap.PrefabLightmapInfoSlots[EditorGUILayout.Popup("Default Lightmap", currentSelection, loadedLIghtmapNameChoices)].Name;
+        if (currentLoadedLightmapName > -1 && lightmapSlotNames[currentLoadedLightmapName] != "—")
+            this.serializedLoadedLightmapName.stringValue = lightmapSlotNames[currentLoadedLightmapName];
 
+        if (!this.serializedLoadedLightmapName.hasMultipleDifferentValues && lightmapSlotNames[currentLoadedLightmapName] != "—")
+        {
             EditorGUILayout.Space(10);
 
             if (GUILayout.Button("Switch"))
-                prefabLightmap.Initialize(this.serializedLoadedLightmapName.stringValue);
+                foreach (PrefabLightmapData prefabLightmap in this.targets)
+                    if (!string.IsNullOrWhiteSpace(this.serializedLoadedLightmapName.stringValue))
+                        prefabLightmap.Initialize(this.serializedLoadedLightmapName.stringValue);
         }
 
         this.serializedObject.ApplyModifiedProperties();
+    }
+
+    /// <summary>
+    /// Finds the intersections between a list of PrefabLightmapInfoSlot names and the provided list of slot names
+    /// </summary>
+    /// <param name="data"><see cref="PrefabLightmapData"/> to inspect for slot names</param>
+    /// <param name="lightmapSlotNames">A pre-created List of slots to look for the intersection of</param>
+    /// <returns></returns>
+    public List<string> GetSlotNameIntersection(PrefabLightmapData data, List<string> lightmapSlotNames)
+    {
+        List<string> intersection = new List<string>();
+
+        if (data.PrefabLightmapInfoSlots == null || data.PrefabLightmapInfoSlots.Length < 1)
+            return intersection;
+
+        if (lightmapSlotNames == null)
+            for (int i = 0; i < data.PrefabLightmapInfoSlots.Length; i++)
+                intersection.Add(data.PrefabLightmapInfoSlots[i].Name);
+        else
+            for (int i = 0; i < data.PrefabLightmapInfoSlots.Length; i++)
+                for (int j = 0; j < lightmapSlotNames.Count; j++)
+                    if (data.PrefabLightmapInfoSlots[i].Name == lightmapSlotNames[j])
+                        intersection.Add(data.PrefabLightmapInfoSlots[i].Name);
+
+        return intersection;
     }
 }
