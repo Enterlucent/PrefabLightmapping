@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Unity component for managing lightmap data for prefabs
 /// </summary>
-public class PrefabLightmapData : MonoBehaviour
+public partial class PrefabLightmapData : MonoBehaviour
 {
     /// <summary>
     /// The name of the default lightmap slot to load if one is not specified 
@@ -17,10 +17,12 @@ public class PrefabLightmapData : MonoBehaviour
     /// The array of lightmap data assigned to this component
     /// </summary>
     public PrefabLightmapInfoSlot[] PrefabLightmapInfoSlots;
+
     /// <summary>
     /// The name of the lightmap to load or that is loaded
     /// </summary>
     public string LoadedLightmapName;
+
     /// <summary>
     /// The index of the lightmap slot that has been loaded
     /// </summary>
@@ -50,22 +52,39 @@ public class PrefabLightmapData : MonoBehaviour
     }
 
     /// <summary>
+    /// Get the index of a given slot name within the prefab data array
+    /// </summary>
+    /// <param name="name">Name of the slot to find the index for.</param>
+    /// <returns>The index within the <see cref="PrefabLightmapInfoSlot">PrefabLightmapInfoSlot</see> array or -1 if not found</returns>
+    public int SlotNameToIndex(string name)
+    {
+        for (int i = 0; i < this.PrefabLightmapInfoSlots.Length; i++)
+            if (this.PrefabLightmapInfoSlots[i].Name == name)
+                return i;
+        return -1;
+    }
+
+    /// <summary>
     /// Initialize the lightmap data for this prefab
     /// </summary>
     /// <param name="name">Name of the lightmap data slot</param>
     public virtual void Initialize(string name)
     {
+        this.loadedIndex = -1;
+
         if (!String.IsNullOrWhiteSpace(name) && this.PrefabLightmapInfoSlots.Length > 0)
         {
-            for (int i = 0; i < this.PrefabLightmapInfoSlots.Length; i++)
-            {
-                if (this.PrefabLightmapInfoSlots[i].Name == name)
-                {
-                    this.LoadedLightmapName = name;
-                    this.loadedIndex = i;
+            this.loadedIndex = this.SlotNameToIndex(name);
 
-                    break;
-                }
+            if (loadedIndex > -1)
+            {
+                this.LoadedLightmapName = name;
+            }
+            else
+            {
+                Debug.LogWarning("The provided slot name " + name + " doesn't not exist on this object.e", this);
+
+                return;
             }
         }
 
@@ -94,6 +113,7 @@ public class PrefabLightmapData : MonoBehaviour
     {
         this.InitializeLoaded();
     }
+
     /// <summary>
     /// Initilize the lightmap from the <see cref="loadedIndex"/> value
     /// </summary>
@@ -103,6 +123,7 @@ public class PrefabLightmapData : MonoBehaviour
             if (this.loadedIndex > -1 && this.loadedIndex < this.PrefabLightmapInfoSlots.Length)
                 this.InjectLightData(this.PrefabLightmapInfoSlots[this.loadedIndex].Data);
     }
+
     /// <summary>
     /// Load the lightmap data into the scene lighting infrastructure
     /// </summary>
