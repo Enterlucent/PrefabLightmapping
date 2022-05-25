@@ -152,9 +152,6 @@ public class PrefabLightmapTool : EditorWindow
         this.ButtonClear.SetEnabled(false);
         this.ButtonBake.SetEnabled(false);
 
-        this.TextFieldPath.value = this.LastTextPath;
-        this.ToggleDefault.value = this.LastDefault;
-
         this.TextFieldPath.RegisterValueChangedCallback(this.TextPathChangedEventHandler);
         this.ButtonPath.clicked += this.ButtonPathClicked;
         this.TextFieldName.RegisterValueChangedCallback(this.TextNameChangedEventHandler);
@@ -163,6 +160,9 @@ public class PrefabLightmapTool : EditorWindow
         this.ToggleAll.RegisterValueChangedCallback(this.ToggleAllChangedEventHandler);
         this.ButtonClear.clicked += this.ButtonClearClicked;
         this.ButtonBake.clicked += this.ButtonBakeClicked;
+
+        this.TextFieldPath.value = this.LastTextPath;
+        this.ToggleDefault.value = this.LastDefault;
 
         this.UpdateListView();
 
