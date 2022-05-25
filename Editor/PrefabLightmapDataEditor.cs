@@ -6,7 +6,7 @@ using UnityEngine;
 /// Custom Editor Inspector for mainpulation the PrefabLightmapData component
 /// </summary>
 [CustomEditor(typeof(PrefabLightmapData)), CanEditMultipleObjects]
-public class PrefabLightmapDataEditor : Editor
+public partial class PrefabLightmapDataEditor : Editor
 {
     /// <summary>
     /// Serialized Property for the lightmap slots
@@ -33,20 +33,7 @@ public class PrefabLightmapDataEditor : Editor
         foreach (PrefabLightmapData prefabLightmapData in this.targets)
             lightmapSlotNames = this.GetSlotNameIntersection(prefabLightmapData, lightmapSlotNames);
 
-        int currentLoadedLightmapName = 0;
-
-        if (this.serializedLoadedLightmapName.hasMultipleDifferentValues || lightmapSlotNames.Count < 1)
-        {
-            currentLoadedLightmapName = lightmapSlotNames.Count;
-
-            lightmapSlotNames.Add("—");
-        }
-        else
-        {
-            currentLoadedLightmapName = lightmapSlotNames.FindIndex(s => s == this.serializedLoadedLightmapName.stringValue);
-        }
-
-        currentLoadedLightmapName = EditorGUILayout.Popup("Default Lightmap", currentLoadedLightmapName, lightmapSlotNames.ToArray());
+        int currentLoadedLightmapName = this.GetLightmapSlotNameIndex("Default Lightmap", lightmapSlotNames, this.serializedLoadedLightmapName);
 
         if (currentLoadedLightmapName > -1 && lightmapSlotNames[currentLoadedLightmapName] != "—")
             this.serializedLoadedLightmapName.stringValue = lightmapSlotNames[currentLoadedLightmapName];
@@ -70,7 +57,7 @@ public class PrefabLightmapDataEditor : Editor
     /// <param name="data"><see cref="PrefabLightmapData"/> to inspect for slot names</param>
     /// <param name="lightmapSlotNames">A pre-created List of slots to look for the intersection of</param>
     /// <returns></returns>
-    public List<string> GetSlotNameIntersection(PrefabLightmapData data, List<string> lightmapSlotNames)
+    protected virtual List<string> GetSlotNameIntersection(PrefabLightmapData data, List<string> lightmapSlotNames)
     {
         List<string> intersection = new List<string>();
 
@@ -87,5 +74,35 @@ public class PrefabLightmapDataEditor : Editor
                         intersection.Add(data.PrefabLightmapInfoSlots[i].Name);
 
         return intersection;
+    }
+
+    /// <summary>
+    /// Get the user selected lightmap slot index from a list of names.
+    /// </summary>
+    /// <param name="label">The text labled for the popup element</param>
+    /// <param name="lightmapSlotNames">The names to select from</param>
+    /// <param name="property">The <see cref="SerializedProperty"/> to set the selected value to.</param>
+    /// <returns>Index into the string array or -1 if not found</returns>
+    protected virtual int GetLightmapSlotNameIndex(string label, List<string> lightmapSlotNames, SerializedProperty property)
+    {
+        int value = -1;
+
+        if (property.hasMultipleDifferentValues || lightmapSlotNames.Count < 1)
+        {
+            value = lightmapSlotNames.FindIndex(s => s == "—");
+
+            if (value == -1)
+            {
+                value = lightmapSlotNames.Count;
+
+                lightmapSlotNames.Add("—");
+            }
+        }
+        else
+        {
+            value = lightmapSlotNames.FindIndex(s => s == property.stringValue);
+        }
+
+        return EditorGUILayout.Popup(label, value, lightmapSlotNames.ToArray());
     }
 }
