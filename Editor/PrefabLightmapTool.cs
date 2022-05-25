@@ -40,6 +40,11 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     [SerializeField]
     protected string LastTextName;
+    /// <summary>
+    /// The most recent "default value" editor checkbox value
+    /// </summary>
+    [SerializeField]
+    protected bool LastDefault = true;
 
     /// <summary>
     /// Internal value for determining if the bake was started as a result of this tool
@@ -148,6 +153,7 @@ public class PrefabLightmapTool : EditorWindow
         this.ButtonBake.SetEnabled(false);
 
         this.TextFieldPath.value = this.LastTextPath;
+        this.ToggleDefault.value = this.LastDefault;
 
         this.TextFieldPath.RegisterValueChangedCallback(this.TextPathChangedEventHandler);
         this.ButtonPath.clicked += this.ButtonPathClicked;
@@ -269,6 +275,8 @@ public class PrefabLightmapTool : EditorWindow
     /// <param name="changeEvent">Unity provided change event</param>
     protected void ToggleDefaltChangedEventHandler(ChangeEvent<bool> changeEvent)
     {
+        this.LastDefault = changeEvent.newValue;
+
         if (changeEvent.newValue == true)
         {
             this.TextFieldName.value = PrefabLightmapData.DefaultPrefabLightmapName;
