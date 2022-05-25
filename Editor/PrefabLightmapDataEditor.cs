@@ -33,12 +33,12 @@ public partial class PrefabLightmapDataEditor : Editor
         foreach (PrefabLightmapData prefabLightmapData in this.targets)
             lightmapSlotNames = this.GetSlotNameIntersection(prefabLightmapData, lightmapSlotNames);
 
-        int currentLoadedLightmapName = this.GetLightmapSlotNameIndex("Default Lightmap", lightmapSlotNames, this.serializedLoadedLightmapName);
+        int lightmapSlotIndex = this.GetLightmapSlotNameIndex("Default Lightmap", lightmapSlotNames, this.serializedLoadedLightmapName);
 
-        if (currentLoadedLightmapName > -1 && lightmapSlotNames[currentLoadedLightmapName] != "—")
-            this.serializedLoadedLightmapName.stringValue = lightmapSlotNames[currentLoadedLightmapName];
+        if (lightmapSlotIndex > -1 && lightmapSlotNames[lightmapSlotIndex] != "—")
+            this.serializedLoadedLightmapName.stringValue = lightmapSlotNames[lightmapSlotIndex];
 
-        if (!this.serializedLoadedLightmapName.hasMultipleDifferentValues && lightmapSlotNames[currentLoadedLightmapName] != "—")
+        if (!this.serializedLoadedLightmapName.hasMultipleDifferentValues && lightmapSlotIndex > -1 && lightmapSlotNames[lightmapSlotIndex] != "—")
         {
             EditorGUILayout.Space(10);
 
