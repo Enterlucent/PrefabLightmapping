@@ -98,7 +98,6 @@ public class PrefabLightmapTool : EditorWindow
         wnd.minSize = new Vector2(330, 300);
     }
 
-
     public void CreateGUI()
     {
         bool found = false;
@@ -165,7 +164,7 @@ public class PrefabLightmapTool : EditorWindow
     }
     public void OnFocus()
     {
-        if (this.UILoaded) this.UpdateListView();
+        this.UpdateListView();
     }
 
     /// <summary>
@@ -316,6 +315,9 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdateListView()
     {
+        if (this.UILoaded == false)
+            return;
+
         List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();
 
         if (items.Count > 0)
@@ -723,7 +725,6 @@ public class PrefabLightmapTool : EditorWindow
     {
         if (texture == null) return null;
 
-        string scenePath = SceneManager.GetActiveScene().path.Substring(0, SceneManager.GetActiveScene().path.Length - 6);
         string prefabPath = Path.Combine(exportRoot, objectName, lightmapName);
         string assetPath = AssetDatabase.GetAssetPath(texture);
         string newAssetPath = Path.Combine(prefabPath, new FileInfo(assetPath).Name);
@@ -741,6 +742,7 @@ public class PrefabLightmapTool : EditorWindow
             importer.filterMode = FilterMode.Bilinear;
             importer.anisoLevel = 3;
             importer.maxTextureSize = 4096;
+            importer.isReadable = true;
         }
 
         AssetDatabase.ImportAsset(newAssetPath, ImportAssetOptions.ForceUpdate);
