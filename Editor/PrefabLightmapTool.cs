@@ -208,6 +208,8 @@ public class PrefabLightmapTool : EditorWindow
         {
             PrefabLightmapData prefabLightmap = item.PrefabLightmap as PrefabLightmapData;
 
+            if (item.Selected == false) continue;
+
             if (prefabLightmap != null)
             {
                 for (int i = 0; i < prefabLightmap.PrefabLightmapInfoSlots.Length; i++)
