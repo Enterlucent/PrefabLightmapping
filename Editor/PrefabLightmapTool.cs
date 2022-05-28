@@ -50,10 +50,6 @@ public class PrefabLightmapTool : EditorWindow
     /// Internal value for determining if the bake was started as a result of this tool
     /// </summary>
     protected bool StartedBaking;
-    /// <summary>
-    /// If the GUI has been loaded by CreateGUI
-    /// </summary>
-    protected bool UILoaded;
 
     /// <summary>
     /// Export path text field
@@ -165,8 +161,6 @@ public class PrefabLightmapTool : EditorWindow
         this.ToggleDefault.value = this.LastDefault;
 
         this.UpdateListView();
-
-        this.UILoaded = true;
     }
     public void OnFocus()
     {
@@ -325,7 +319,7 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdateListView()
     {
-        if (this.UILoaded == false)
+        if (this.ListViewBehaviours == null)
             return;
 
         List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();
