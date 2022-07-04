@@ -16,5 +16,6 @@
         <ui:VisualElement style="flex-direction: row; flex-shrink: 0; flex-grow: 1;" />
         <ui:Button text="Clear" display-tooltip-when-elided="true" name="ButtonClear" enable-rich-text="false" focusable="false" tooltip="Clear the selected PrefabLightmaps" />
         <ui:Button text="Bake" display-tooltip-when-elided="true" name="ButtonBake" enable-rich-text="false" focusable="false" tooltip="Bake the selected PrefabLightmaps" />
+        <ui:Button text="Cancel" display-tooltip-when-elided="true" name="ButtonCancel" tooltip="Cancel the current bake" focusable="false" enable-rich-text="false" style="display: none;" />
     </ui:VisualElement>
 </ui:UXML>

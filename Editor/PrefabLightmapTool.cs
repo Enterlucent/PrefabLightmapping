@@ -49,7 +49,16 @@ public class PrefabLightmapTool : EditorWindow
     /// <summary>
     /// Internal value for determining if the bake was started as a result of this tool
     /// </summary>
-    protected bool StartedBaking;
+    protected bool BakingStarted;
+
+    /// <summary>
+    /// Index into the baking queue that is currently being processed
+    /// </summary>
+    protected int BakingIndex;
+    /// <summary>
+    /// The queue of objects to be baked in the current run
+    /// </summary>
+    protected List<PrefabLightmapData> BakingItems;
 
     /// <summary>
     /// Export path text field
@@ -87,6 +96,8 @@ public class PrefabLightmapTool : EditorWindow
     /// Baked slot information button
     /// </summary>
     protected Button ButtonBake;
+
+    protected Button ButtonCancel;
 
     /// <summary>
     /// Static function for registering with the Editor interface
@@ -141,6 +152,7 @@ public class PrefabLightmapTool : EditorWindow
         this.ToggleAll = this.rootVisualElement.Q<Toggle>(name = "ToggleAll");
         this.ButtonClear = this.rootVisualElement.Q<Button>(name = "ButtonClear");
         this.ButtonBake = this.rootVisualElement.Q<Button>(name = "ButtonBake");
+        this.ButtonCancel = this.rootVisualElement.Q<Button>(name = "ButtonCancel");
 
         this.TextFieldPath.SetEnabled(false);
         this.TextFieldName.SetEnabled(false);
@@ -156,6 +168,7 @@ public class PrefabLightmapTool : EditorWindow
         this.ToggleAll.RegisterValueChangedCallback(this.ToggleAllChangedEventHandler);
         this.ButtonClear.clicked += this.ButtonClearClicked;
         this.ButtonBake.clicked += this.ButtonBakeClicked;
+        this.ButtonCancel.clicked += this.ButtonCancelClicked;
 
         this.TextFieldPath.value = this.LastTextPath;
         this.ToggleDefault.value = this.LastDefault;
@@ -230,10 +243,41 @@ public class PrefabLightmapTool : EditorWindow
             return;
         }
 
-        this.StartedBaking = true;
+        this.BakingStarted = true;
+        this.BakingItems = new List<PrefabLightmapData>();
+
+        foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
+            if (item.Selected == true)
+                this.BakingItems.Add(item.PrefabLightmap);
 
         Lightmapping.bakeCompleted += this.UpdatePrefabs;
-        Lightmapping.BakeAsync();
+
+        this.ListViewBehaviours.SetEnabled(false);
+        this.ButtonBake.style.display = DisplayStyle.None;
+        this.ButtonCancel.style.display = DisplayStyle.Flex;
+
+        this.BakingIndex = -1;
+        this.ProcessNextPrefab();
+    }
+    /// <summary>
+    /// Cacnel the previously started bake of the selected items
+    /// </summary>
+    protected void ButtonCancelClicked()
+    {
+        Lightmapping.bakeCompleted -= this.UpdatePrefabs;
+        Lightmapping.Cancel();
+        Lightmapping.ClearLightingDataAsset();
+
+        this.BakingStarted = false;
+        this.BakingIndex = -1;
+        this.BakingItems.Clear();
+
+        this.ButtonCancel.style.display = DisplayStyle.None;
+        this.ButtonBake.style.display = DisplayStyle.Flex;
+        this.ListViewBehaviours.SetEnabled(true);
+
+        foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
+            item.PrefabLightmap.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -319,7 +363,7 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected void UpdateListView()
     {
-        if (this.ListViewBehaviours == null)
+        if (this.ListViewBehaviours == null || this.ListViewBehaviours.enabledSelf == false)
             return;
 
         List<PrefabLightmapDataItem> items = this.FindPrefabLightmapItems();
@@ -380,27 +424,42 @@ public class PrefabLightmapTool : EditorWindow
 
         this.ListViewBehaviours.Rebuild();
     }
+
     /// <summary>
-    /// UPdate the prefab with the lighting data and save the prefab to the file system
+    /// Check for and process the next PrefabLightmapData item
+    /// </summary>
+    protected void ProcessNextPrefab()
+    {
+        this.BakingIndex++;
+
+        if (this.BakingItems.Count > this.BakingIndex)
+        {
+            foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
+                item.PrefabLightmap.gameObject.SetActive(false);
+
+            this.BakingItems[this.BakingIndex].gameObject.SetActive(true);
+
+            Lightmapping.ClearLightingDataAsset();
+            Lightmapping.BakeAsync();
+        }
+        else this.ButtonCancelClicked();
+    }
+    /// <summary>
+    /// Update the prefab with the lighting data and save the prefab to the file system
     /// </summary>
     protected void UpdatePrefabs()
     {
-        if (this.StartedBaking == false)
+        if (this.BakingStarted == false)
             return;
 
-        int counter = 0;
+        if (this.BakingIndex < 0 || this.BakingIndex >= this.BakingItems.Count)
+            return;
 
-        foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
+        PrefabLightmapData prefabLightmap = this.BakingItems[this.BakingIndex];
+
+        if (prefabLightmap.gameObject.activeInHierarchy == true)
         {
-            counter++;
-
-            string itemName = item.PrefabLightmap.gameObject.name + "-" + counter;
-
-            if (item.Selected == false) continue;
-
-            PrefabLightmapInfo data = PrefabLightmapTool.GatherLightmapData(item.PrefabLightmap.gameObject, this.TextFieldPath.value, itemName, this.TextFieldName.value);
-
-            PrefabLightmapData prefabLightmap = item.PrefabLightmap as PrefabLightmapData;
+            PrefabLightmapInfo data = PrefabLightmapTool.GatherLightmapData(prefabLightmap.gameObject, this.TextFieldPath.value, prefabLightmap.gameObject.name, this.TextFieldName.value);
 
             if (prefabLightmap != null)
             {
@@ -430,15 +489,15 @@ public class PrefabLightmapTool : EditorWindow
                     Data = data
                 };
 
-                GameObject targetPrefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(item.PrefabLightmap.gameObject) as GameObject;
+                GameObject targetPrefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(prefabLightmap.gameObject) as GameObject;
 
                 if (targetPrefab != null)
                 {
-                    GameObject root = PrefabUtility.GetOutermostPrefabInstanceRoot(item.PrefabLightmap.gameObject);
+                    GameObject root = PrefabUtility.GetOutermostPrefabInstanceRoot(prefabLightmap.gameObject);
 
                     if (root != null)
                     {
-                        GameObject rootPrefab = PrefabUtility.GetCorrespondingObjectFromSource(item.PrefabLightmap.gameObject);
+                        GameObject rootPrefab = PrefabUtility.GetCorrespondingObjectFromSource(prefabLightmap.gameObject);
 
                         string rootPath = AssetDatabase.GetAssetPath(rootPrefab);
 
@@ -446,7 +505,7 @@ public class PrefabLightmapTool : EditorWindow
 
                         try
                         {
-                            PrefabUtility.ApplyPrefabInstance(item.PrefabLightmap.gameObject, InteractionMode.AutomatedAction);
+                            PrefabUtility.ApplyPrefabInstance(prefabLightmap.gameObject, InteractionMode.AutomatedAction);
                         }
                         catch
                         {
@@ -458,13 +517,13 @@ public class PrefabLightmapTool : EditorWindow
                     }
                     else
                     {
-                        PrefabUtility.ApplyPrefabInstance(item.PrefabLightmap.gameObject, InteractionMode.AutomatedAction);
+                        PrefabUtility.ApplyPrefabInstance(prefabLightmap.gameObject, InteractionMode.AutomatedAction);
                     }
                 }
             }
         }
 
-        this.StartedBaking = false;
+        this.ProcessNextPrefab();
     }
 
     /// <summary>
