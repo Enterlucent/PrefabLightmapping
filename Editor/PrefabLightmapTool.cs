@@ -570,12 +570,13 @@ public class PrefabLightmapTool : EditorWindow
             {
                 bool found = false;
 
-                for (int j = 0; j < prefabLightmaps.Length; j++)
-                    if (items[i].Id == prefabLightmaps[j].GetInstanceID() && items[i].PrefabLightmap != null)
-                    {
-                        found = true;
-                        break;
-                    }
+                if (items[i].PrefabLightmap != null && items[i].PrefabLightmap.enabled == true)
+                    for (int j = 0; j < prefabLightmaps.Length; j++)
+                        if (items[i].Id == prefabLightmaps[j].GetInstanceID() && items[i].PrefabLightmap != null)
+                        {
+                            found = true;
+                            break;
+                        }
 
                 if (found == false)
                     items.RemoveAt(i);
@@ -585,6 +586,9 @@ public class PrefabLightmapTool : EditorWindow
 
         foreach (PrefabLightmapData prefablightmap in prefabLightmaps)
         {
+            if (prefablightmap.enabled == false)
+                continue;
+
             bool found = false;
 
             if (items != null)
