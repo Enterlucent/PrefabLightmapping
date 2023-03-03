@@ -24,8 +24,10 @@ The user interface is broken down into 4 distinct sections:
 	- The name of the slot to bake for. *By default the "Default" slot is used*
 	- The check box disables the default slot name and allows the user to input a custom name for the slot to bake to.
 	- The button allows for manual "PrefabLightmapData ListView" refreshing, however, *the "PrefabLightmapData ListView" is also updated when the tool gains focus*
-3. PrefabLightmapData ListView - Used to select which objects to bake for that have the PrefabLightmapData component added to them
-4. Misc Functions
+3. Lightmap Baking Flags - Toggle various differeing baking options to be use on the current bake
+	- Isolate - Cuases each prefab to be baked in isolation (disabling all other lightmap instances before performing the baking operation)
+4. PrefabLightmapData ListView - Used to select which objects to bake for that have the PrefabLightmapData component added to them
+5. Misc Functions
 	- The initial check box will allow the user to quickly check or uncheck all items in the "PrefabLightmapData ListView"
 	- The clear button will remove the lightmap slot information and stored data for the selected objects and the value of the "Lightmap Bake Slot"
 	- Bake a new lightmap environment and add it to the "Lightmap Bake Slot" and export the files to the "Export Location"
