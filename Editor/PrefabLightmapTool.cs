@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -11,6 +12,22 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PrefabLightmapTool : EditorWindow
 {
+    /// <summary>
+    /// Enum Flags to instruct the tool how to handle the requested bake
+    /// </summary>
+    [Flags]
+    public enum BakingSettingFlags
+    {
+        /// <summary>
+        /// No additional bake settings
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// Bake all selected items in isolation
+        /// </summary>
+        Isolate = 1 << 0,
+    }
+
     /// <summary>
     /// Internal class used for managing the <see cref="PrefabLightmapData"/> components found within the scene
     /// </summary>
@@ -81,6 +98,10 @@ public class PrefabLightmapTool : EditorWindow
     /// </summary>
     protected Button ButtonReload;
     /// <summary>
+    /// Settings used for the requested baking operation
+    /// </summary>
+    protected EnumFlagsField EnumBakeFlags;
+    /// <summary>
     /// ListView of <see cref="PrefabLightmapData"/> component in the current scene
     /// </summary>
     protected ListView ListViewBehaviours;
@@ -148,6 +169,7 @@ public class PrefabLightmapTool : EditorWindow
         this.TextFieldName = this.rootVisualElement.Q<TextField>(name = "TextName");
         this.ToggleDefault = this.rootVisualElement.Q<Toggle>(name = "ToggleDefault");
         this.ButtonReload = this.rootVisualElement.Q<Button>(name = "ButtonReload");
+        this.EnumBakeFlags = this.rootVisualElement.Q<EnumFlagsField>(name = "EnumBakeFlags");
         this.ListViewBehaviours = this.rootVisualElement.Q<ListView>(name = "ListBehaviours");
         this.ToggleAll = this.rootVisualElement.Q<Toggle>(name = "ToggleAll");
         this.ButtonClear = this.rootVisualElement.Q<Button>(name = "ButtonClear");
@@ -434,10 +456,13 @@ public class PrefabLightmapTool : EditorWindow
 
         if (this.BakingItems.Count > this.BakingIndex)
         {
-            foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
-                item.PrefabLightmap.gameObject.SetActive(false);
+            if ((((BakingSettingFlags)this.EnumBakeFlags.value) & BakingSettingFlags.Isolate) == BakingSettingFlags.Isolate)
+            {
+                foreach (PrefabLightmapDataItem item in this.ListViewBehaviours.itemsSource)
+                    item.PrefabLightmap.gameObject.SetActive(false);
 
-            this.BakingItems[this.BakingIndex].gameObject.SetActive(true);
+                this.BakingItems[this.BakingIndex].gameObject.SetActive(true);
+            }
 
             Lightmapping.ClearLightingDataAsset();
             Lightmapping.BakeAsync();

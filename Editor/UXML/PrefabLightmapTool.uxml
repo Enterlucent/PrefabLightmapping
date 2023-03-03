@@ -10,6 +10,11 @@
             <ui:TextField picking-mode="Ignore" value="Default" text="Default" name="TextName" tooltip="Prefab lightmap array element identifier." label="Lightmap Slot Name" style="justify-content: flex-start; flex-direction: row; flex-wrap: nowrap; align-items: center; flex-grow: 1; flex-shrink: 0;" />
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement style="flex-direction: row;">
+        <ui:VisualElement style="flex-direction: row-reverse; flex-shrink: 0; flex-grow: 1;">
+            <uie:EnumFlagsField label="Lightmap Bake Flags" value="Isolate" name="EnumBakeFlags" tooltip="Build settings for current bake" type="PrefabLightmapTool+BakingSettingFlags, PrefabLightmappingEditor" style="flex-grow: 1; align-items: stretch;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
     <ui:ListView focusable="true" name="ListBehaviours" show-alternating-row-backgrounds="None" selection-type="None" show-border="true" fixed-item-height="23" virtualization-method="FixedHeight" horizontal-scrolling="false" show-bound-collection-size="false" show-foldout-header="false" show-add-remove-footer="false" reorderable="false" style="flex-grow: 1; flex-shrink: 0; margin-left: 1px; margin-right: 1px; margin-top: 1px; margin-bottom: 1px; flex-direction: row; align-items: auto; flex-wrap: nowrap; width: 100%; height: 100%; flex-basis: 0;" />
     <ui:VisualElement style="flex-direction: row; justify-content: flex-start; padding-top: 4px; margin-bottom: 4px;">
         <ui:Toggle label=" All/None" name="ToggleAll" tooltip="Toggle all or none based on context." focusable="false" style="flex-direction: row-reverse; width: 70px; justify-content: flex-end; align-items: center; flex-wrap: nowrap; flex-grow: 0; flex-shrink: 0; left: 1px;" />
